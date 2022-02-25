@@ -1,5 +1,5 @@
 from flask_cors import CORS
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, render_template
 import pickle
 from dotenv import load_dotenv
 import os
@@ -30,7 +30,7 @@ def persist_db():
 
 @app.route('/')
 def index():
-    return send_from_directory('static', 'index.html')
+    return render_template('index.html')
 
 # route for getting names of all md files
 @app.route('/list_files')
