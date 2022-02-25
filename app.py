@@ -1,5 +1,5 @@
 from flask_cors import CORS
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, send_from_directory
 import pickle
 from dotenv import load_dotenv
 import os
@@ -7,7 +7,7 @@ load_dotenv()
 
 
 DATA_FOLDER = 'data/'
-app = Flask(__name__, static_folder='/static', static_url_path='/')
+app = Flask(__name__, static_folder='/static')
 CORS(app, supports_credentials=True)
 
 
@@ -31,6 +31,11 @@ def persist_db():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route("/static/<path:path>")
+def static_dir(path):
+    return send_from_directory("static", path)
 
 # route for getting names of all md files
 @app.route('/list_files')
