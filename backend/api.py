@@ -5,7 +5,7 @@ from flask_cors import CORS
 
 
 DATA_FOLDER = 'data/'
-app = Flask(__name__, static_folder='./static/', static_url_path='/')
+app = Flask(__name__, static_folder='../frontend/dist/', static_url_path='/')
 app.config["DEBUG"] = True
 CORS(app, supports_credentials=True)
 
