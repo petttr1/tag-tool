@@ -27,6 +27,11 @@ def persist_db():
     with open('storage.pickle', 'wb') as handle:
         pickle.dump(DATABASE, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
+
+@app.route('/')
+def index():
+    return "<h1>Hello World!</h1>"
+
 # route for getting names of all md files
 @app.route('/list_files')
 def list_files():
@@ -60,4 +65,4 @@ def get_tags():
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 8000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(threaded=True, host='0.0.0.0', port=port)
