@@ -1,1 +1,1 @@
-web: npm start --prefix frontent
+web: sh -c 'cd ./frontend/ && npm start'

@@ -1,12 +1,13 @@
-import os
-import pickle
-from flask import Flask, request
 from flask_cors import CORS
+from flask import Flask, request
+import pickle
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 
 DATA_FOLDER = 'data/'
 app = Flask(__name__, static_folder='../frontend/dist/', static_url_path='/')
-app.config["DEBUG"] = True
 CORS(app, supports_credentials=True)
 
 
