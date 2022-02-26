@@ -52,7 +52,7 @@ def store_content(file):
 # route for getting the "DB" for dev purposes
 @app.route('/tags')
 def get_tags():
-    tags = DB.find()
+    tags = DB.find({})
     print(list(tags))
     return {'data': list(tags)}
 
