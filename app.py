@@ -48,7 +48,7 @@ def store_content(file):
     print(new_tags)
     query = {'filename': file}
     update = {'$push': {'tags': new_tags}}
-    options = {'upsert': 'true'}
+    options = {'upsert': True}
     x = DB.update_one(query, update, options)
     print(x)
     return jsonify({'result': x})
