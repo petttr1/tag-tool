@@ -53,8 +53,11 @@ def store_content(file):
 @app.route('/tags')
 def get_tags():
     tags = DB.find({})
-    print(list(tags))
-    return {'data': list(tags)}
+    res = {}
+    for tag in list(tags):
+        res[tag['filename']] = tag['tags']
+    # print(list(tags))
+    return {'data': res}
 
 
 if __name__ == '__main__':
