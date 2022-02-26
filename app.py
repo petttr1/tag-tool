@@ -50,7 +50,7 @@ def store_content(file):
     update = {'$push': {'tags': new_tags}}
     x = DB.update_one(query, update, upsert=True)
     print(x)
-    return jsonify({'result': x})
+    return jsonify({'result': 'ok'})
 
 # route for getting the "DB" for dev purposes
 @app.route('/tags')
