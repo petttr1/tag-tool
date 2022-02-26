@@ -43,13 +43,10 @@ def get_file(file):
 # route for recording new tags into a "DB" = dict stored in memory
 @app.route('/store_tags/<file>', methods=['POST'])
 def store_content(file):
-    print(file)
     new_tags = request.json['tags']
-    print(new_tags)
     query = {'filename': file}
     update = {'$push': {'tags': new_tags}}
-    x = DB.update_one(query, update, upsert=True)
-    print(x)
+    DB.update_one(query, update, upsert=True)
     return jsonify({'result': 'ok'})
 
 # route for getting the "DB" for dev purposes
@@ -57,7 +54,7 @@ def store_content(file):
 def get_tags():
     tags = DB.find()
     print(list(tags))
-    return jsonify({'data': list(tags)})
+    return {'data': list(tags)}
 
 
 if __name__ == '__main__':
