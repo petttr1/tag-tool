@@ -1,31 +1,21 @@
 from flask_cors import CORS
-from flask import Flask, request, render_template  # , send_from_directory
-import pickle
+from flask import Flask, request, render_template
+from pymongo import MongoClient
+import pymongo
+from flask.json import jsonify
 from dotenv import load_dotenv
 import os
 load_dotenv()
 
 
 DATA_FOLDER = 'data/'
-app = Flask(__name__)  # , static_folder='/static')
+CONNECTION_STRING = os.environ.get("MONGODB_URI")
+CONNECTION_STRING = URI
+COLLECTION = 'tags'
+app = Flask(__name__)
 CORS(app, supports_credentials=True)
-
-
-def load_db():
-    try:
-        with open('storage.pickle', 'rb') as handle:
-            b = pickle.load(handle)
-    except:
-        b = {}
-    return b
-
-
-DATABASE = load_db()
-
-
-def persist_db():
-    with open('storage.pickle', 'wb') as handle:
-        pickle.dump(DATABASE, handle, protocol=pickle.HIGHEST_PROTOCOL)
+CLI = MongoClient(CONNECTION_STRING)
+DB = CLI[COLLECTION]['tags']
 
 
 @app.route('/')
@@ -35,8 +25,7 @@ def index():
 
 @app.route("/reset_tags")
 def reset_tags():
-    DATABASE = {}
-    persist_db()
+    DB.delete_many({})
     return {'result': 'success'}
 
 # route for getting names of all md files
@@ -56,18 +45,19 @@ def get_file(file):
 @app.route('/store_tags/<file>', methods=['POST'])
 def store_content(file):
     new_tags = request.json['tags']
+    doc = {'filename': file, 'tags': [new_tags]}
     try:
-        DATABASE[file].extend(new_tags)
+        x = DB.update_one({'filename': file}, {'$push': {'tags': new_tags}})
     except:
-        DATABASE[file] = new_tags
-    persist_db()
-    return {'result': 'success'}
+        x = DB.insert_one(doc)
+    return jsonify({'result': x})
 
 # route for getting the "DB" for dev purposes
-@app.route('/get_tags')
+@app.route('/tags')
 def get_tags():
-    persisted = load_db()
-    return {'data': persisted}
+    tags = DB.find()
+    print(list(tags))
+    return jsonify({'data': list(tags)})
 
 
 if __name__ == '__main__':
