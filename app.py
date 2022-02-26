@@ -33,9 +33,11 @@ def index():
     return render_template('index.html')
 
 
-# @app.route("/static/<path:path>")
-# def static_dir(path):
-#     return send_from_directory("static", path)
+@app.route("/reset_tags")
+def static_dir():
+    DATABASE = {}
+    persist_db()
+    return {'result': 'success'}
 
 # route for getting names of all md files
 @app.route('/list_files')
