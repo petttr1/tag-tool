@@ -1,1 +1,0 @@
-1. blogosphere; made up of all blogs and their interconnections^[https://en.wikipedia.org/wiki/Blogosphere]

@@ -1,1 +1,0 @@
-1. macrocycle; consists out of multiple [[block (sports periodization)|blocks]]

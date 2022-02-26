@@ -1,2 +1,0 @@
-**superclass**: [[human resources]]
-1. [[human]] capital; a concept used by [[human]] resource professionals to designate personal attributes considered useful in the production process^[https://en.wikipedia.org/wiki/Human_capital]

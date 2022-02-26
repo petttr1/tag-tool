@@ -1,1 +1,0 @@
-1. "heuristic" is related to "[[bucket sort]]"

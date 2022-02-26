@@ -1,1 +1,0 @@
-1. _Schwerpunkt_; point of main effort^[https://en.wikipedia.org/wiki/Blitzkrieg#Methods_of_operations]
