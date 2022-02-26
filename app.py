@@ -10,7 +10,6 @@ load_dotenv()
 
 DATA_FOLDER = 'data/'
 CONNECTION_STRING = os.environ.get("MONGODB_URI")
-CONNECTION_STRING = URI
 COLLECTION = 'tags'
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
