@@ -34,7 +34,7 @@ def index():
 
 
 @app.route("/reset_tags")
-def static_dir():
+def reset_tags():
     DATABASE = {}
     persist_db()
     return {'result': 'success'}
@@ -55,7 +55,6 @@ def get_file(file):
 # route for recording new tags into a "DB" = dict stored in memory
 @app.route('/store_tags/<file>', methods=['POST'])
 def store_content(file):
-    print(request.json)
     new_tags = request.json['tags']
     try:
         DATABASE[file].extend(new_tags)
@@ -67,7 +66,8 @@ def store_content(file):
 # route for getting the "DB" for dev purposes
 @app.route('/get_tags')
 def get_tags():
-    return {'data': DATABASE}
+    persisted = load_db()
+    return {'data': persisted}
 
 
 if __name__ == '__main__':
