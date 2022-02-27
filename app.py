@@ -54,11 +54,12 @@ def store_content(user, file):
 def get_tags():
     tags = DB.find({})
     res = {}
-    print(list(tags))
     for tag in list(tags):
-        res[tag['user']] = {}
-        res[tag['user']][tag['filename']] = tag['tags']
-    # print(list(tags))
+        try:
+            res[tag['user']][tag['filename']] = tag['tags']
+        except:
+            res[tag['user']] = {}
+            res[tag['user']][tag['filename']] = tag['tags']
     return {'data': res}
 
 
