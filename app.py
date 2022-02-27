@@ -41,10 +41,10 @@ def get_file(file):
     return {'file_content': lines}
 
 # route for recording new tags into a "DB" = dict stored in memory
-@app.route('/store_tags/<file>', methods=['POST'])
-def store_content(file):
+@app.route('/store_tags/<user>/<file>', methods=['POST'])
+def store_content(user, file):
     new_tags = request.json['tags']
-    query = {'filename': file}
+    query = {'user': user, 'filename': file}
     update = {'$push': {'tags': new_tags}}
     DB.update_one(query, update, upsert=True)
     return jsonify({'result': 'ok'})
@@ -55,7 +55,8 @@ def get_tags():
     tags = DB.find({})
     res = {}
     for tag in list(tags):
-        res[tag['filename']] = tag['tags']
+        res[tag['user']] = {}
+        res[tag['user']][tag['filename']] = tag['tags']
     # print(list(tags))
     return {'data': res}
 
