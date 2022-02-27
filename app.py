@@ -54,7 +54,7 @@ def store_content(user, file):
 def get_tags():
     tags = DB.find({})
     res = {}
-    print(tags)
+    print(list(tags))
     for tag in list(tags):
         res[tag['user']] = {}
         res[tag['user']][tag['filename']] = tag['tags']
