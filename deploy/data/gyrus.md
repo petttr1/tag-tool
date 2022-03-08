@@ -1,1 +1,0 @@
-1. "gyrus" referring to "[[cortex]]"

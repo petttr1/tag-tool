@@ -1,1 +1,0 @@
-1. PPAR (acronym); peroxisome proliferator-activated receptor^[https://en.wikipedia.org/wiki/Peroxisome_proliferator-activated_receptor]

@@ -1,31 +1,20 @@
 from flask_cors import CORS
-from flask import Flask, request, render_template, send_from_directory
-import pickle
+from flask import Flask, request, render_template
+from pymongo import MongoClient
+import pymongo
+from flask.json import jsonify
 from dotenv import load_dotenv
 import os
 load_dotenv()
 
 
 DATA_FOLDER = 'data/'
-app = Flask(__name__, static_folder='/static')
+CONNECTION_STRING = os.environ.get("MONGODB_URI")
+COLLECTION = 'tags'
+app = Flask(__name__)
 CORS(app, supports_credentials=True)
-
-
-def load_db():
-    try:
-        with open('storage.pickle', 'rb') as handle:
-            b = pickle.load(handle)
-    except:
-        b = {}
-    return b
-
-
-DATABASE = load_db()
-
-
-def persist_db():
-    with open('storage.pickle', 'wb') as handle:
-        pickle.dump(DATABASE, handle, protocol=pickle.HIGHEST_PROTOCOL)
+CLI = MongoClient(CONNECTION_STRING)
+DB = CLI[COLLECTION]['tags']
 
 
 @app.route('/')
@@ -33,9 +22,10 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/static/<path:path>")
-def static_dir(path):
-    return send_from_directory("static", path)
+@app.route("/reset_tags")
+def reset_tags():
+    DB.delete_many({})
+    return {'result': 'success'}
 
 # route for getting names of all md files
 @app.route('/list_files')
@@ -51,21 +41,26 @@ def get_file(file):
     return {'file_content': lines}
 
 # route for recording new tags into a "DB" = dict stored in memory
-@app.route('/store_tags/<file>', methods=['POST'])
-def store_content(file):
-    print(request.json)
+@app.route('/store_tags/<user>/<file>', methods=['POST'])
+def store_content(user, file):
     new_tags = request.json['tags']
-    try:
-        DATABASE[file].extend(new_tags)
-    except:
-        DATABASE[file] = new_tags
-    persist_db()
-    return {'result': 'success'}
+    query = {'user': user, 'filename': file}
+    update = {'$push': {'tags': new_tags}}
+    DB.update_one(query, update, upsert=True)
+    return jsonify({'result': 'ok'})
 
 # route for getting the "DB" for dev purposes
-@app.route('/get_tags')
+@app.route('/tags')
 def get_tags():
-    return {'data': DATABASE}
+    tags = DB.find({})
+    res = {}
+    for tag in list(tags):
+        try:
+            res[tag['user']][tag['filename']] = tag['tags']
+        except:
+            res[tag['user']] = {}
+            res[tag['user']][tag['filename']] = tag['tags']
+    return {'data': res}
 
 
 if __name__ == '__main__':

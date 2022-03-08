@@ -1,1 +1,0 @@
-1. milk has naturally high concentrations of [[electrolyte|electrolytes]]^[Cutting-Edge Cycling, p. 265]

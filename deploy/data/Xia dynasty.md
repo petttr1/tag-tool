@@ -1,1 +1,0 @@
-1. Xia dynasty; the first dynasty in traditional [[China|Chinese]] [[history|historiography]]

@@ -1,1 +1,0 @@
-1. a key measure in [[information]] theory is [[entropy]]
